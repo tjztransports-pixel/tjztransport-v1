@@ -188,10 +188,10 @@ const journeyHighlights = [
 ];
 
 const experienceStats = [
-  { label: 'Happy Travelers', value: '0 +' },
-  { label: 'Dream Destinations', value: '0 +' },
-  { label: 'Years of Experience', value: '0 +' },
-  { label: 'Support & Guidance', value: '0 /5' },
+  { label: 'Happy Travelers', value: '2,500+' },
+  { label: 'Dream Destinations', value: '120+' },
+  { label: 'Years of Experience', value: '12+' },
+  { label: 'Support & Guidance', value: '4.9/5' },
 ];
 
 const galleryImages = [
