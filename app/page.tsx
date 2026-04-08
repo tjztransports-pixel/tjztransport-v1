@@ -2,7 +2,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Facebook, Twitter, Youtube } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Facebook, Twitter, Youtube } from 'lucide-react';
 import BookingForm from './components/BookingForm';
 
 const heroSlides = [
@@ -33,6 +34,27 @@ const whyChooseUs = [
     title: 'Unforgettable Experiences',
     description: 'Handpicked tours and activities designed to make every moment count.',
   },
+];
+
+const footerMenuLinks = [
+  { label: 'Tours & Safari', href: 'https://tjztransports.com/tours-safari/' },
+  { label: 'Destinations', href: 'https://tjztransports.com/destinations/' },
+  { label: 'Transport', href: 'https://tjztransports.com/transport-solution/' },
+  { label: 'About', href: 'https://tjztransports.com/about/' },
+  { label: 'Terms', href: 'https://tjztransports.com/terms/' },
+  { label: 'FAQ', href: 'https://tjztransports.com/faq/' },
+  { label: 'Contact', href: 'https://tjztransports.com/contact/' },
+];
+
+const footerDestinationLinks = [
+  { label: 'Nature', href: 'https://tjztransports.com/destinations/nature/' },
+];
+
+const footerSupportLinks = [
+  { label: 'Help Center', href: '#' },
+  { label: 'Help Center for Suppliers', href: '#' },
+  { label: 'Terms & Conditions', href: 'https://tjztransports.com/terms-conditions-2/' },
+  { label: 'Privacy Policy', href: '#' },
 ];
 
 const featuredTours = [
@@ -337,11 +359,18 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Why Choose Us</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {whyChooseUs.map((item) => (
-              <div key={item.title} className="rounded-xl border border-white/25 bg-white/10 p-5 text-center">
+            {whyChooseUs.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="rounded-xl border border-white/25 bg-white/10 p-5 text-center"
+              >
                 <p className="mb-2 font-semibold">{item.title}</p>
                 <p className="text-sm text-white/90">{item.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -352,8 +381,15 @@ export default function HomePage() {
           <h2 className="mb-2 text-center text-3xl font-bold md:text-4xl">Popular Destinations</h2>
           <p className="mb-10 text-center text-gray-600">Cape Town Destinations &amp; Beyond</p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {featuredTours.map((tour) => (
-              <article key={tour.title} className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            {featuredTours.map((tour, index) => (
+              <motion.article
+                key={tour.title}
+                initial={{ opacity: 0, y: 36 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: index * 0.07 }}
+                className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
+              >
                 <div className="relative h-56">
                   <img src={tour.image} alt={tour.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20" />
@@ -365,7 +401,7 @@ export default function HomePage() {
                   <h3 className="line-clamp-3 text-sm font-semibold leading-6">{tour.title}</h3>
                   <p className="mt-3 text-sm font-bold text-[#3166DB]">{tour.price}</p>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -375,15 +411,22 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Unforgettable Journeys</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {journeyHighlights.map((item) => (
-              <article key={item.title} className="group relative h-64 overflow-hidden rounded-2xl">
+            {journeyHighlights.map((item, index) => (
+              <motion.article
+                key={item.title}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="group relative h-64 overflow-hidden rounded-2xl"
+              >
                 <img src={item.image} alt={item.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/45 p-5" />
                 <div className="absolute inset-x-0 bottom-0 p-5">
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#F7DC58]">{item.kicker}</p>
                   <h3 className="text-lg font-bold">{item.title}</h3>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -420,8 +463,15 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-2 text-center text-3xl font-bold md:text-4xl">Based on your interest in Cape Town</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {interestTours.map((tour) => (
-              <article key={tour.title} className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+            {interestTours.map((tour, index) => (
+              <motion.article
+                key={tour.title}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.09 }}
+                className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
+              >
                 <div className="relative">
                   <img src={tour.image} alt={tour.title} className="h-56 w-full object-cover" />
                   <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-[#1A1E39]">
@@ -432,19 +482,26 @@ export default function HomePage() {
                   <h3 className="line-clamp-3 text-sm font-semibold leading-6">{tour.title}</h3>
                   <p className="mt-3 text-sm font-bold text-[#3166DB]">{tour.price}</p>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-            {destinationHighlights.map((item) => (
-              <article key={item.name} className="group relative h-44 overflow-hidden rounded-xl">
+            {destinationHighlights.map((item, index) => (
+              <motion.article
+                key={item.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.45, delay: index * 0.06 }}
+                className="group relative h-44 overflow-hidden rounded-xl"
+              >
                 <img src={item.image} alt={item.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/35" />
                 <div className="absolute bottom-3 left-3">
                   <h3 className="text-sm font-semibold text-white">{item.name}</h3>
                   {item.tours && <p className="mt-1 text-xs text-white/90">{item.tours}</p>}
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -453,18 +510,53 @@ export default function HomePage() {
       <section className="bg-[#F7DC58] px-4 py-16">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2 md:items-center">
           <div>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#1A1E39]">Plan with a local</p>
-            <h2 className="mb-4 text-3xl font-bold md:text-5xl">Plan with a local Experience the real South Africa</h2>
-            <p className="mb-6 text-gray-800">Let a local expert craft your dream trip.</p>
-            <button
-              onClick={() => setIsBookingOpen(true)}
-              className="rounded-full bg-[#1A1E39] px-7 py-3 font-semibold text-[#F7DC58] transition hover:bg-[#0f1328]"
+            <motion.p
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#1A1E39]"
             >
+              Plan with a local
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.55, delay: 0.3 }}
+              className="mb-4 text-3xl font-bold md:text-5xl"
+            >
+              Plan with a local Experience the real South Africa
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.55, delay: 0.45 }}
+              className="mb-6 text-gray-800"
+            >
+              Let a local expert craft your dream trip.
+            </motion.p>
+            <motion.a
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.55, delay: 0.6 }}
+              href="https://tjztransports.com/tour-list-5/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-[#1A1E39] px-7 py-3 font-semibold text-[#F7DC58] transition hover:bg-[#0f1328]"
+            >
+              <ArrowUpRight className="h-4 w-4" />
               Get Started
-            </button>
+            </motion.a>
           </div>
-          <img
-            src="https://www.tjztransports.com/wp-content/uploads/2025/10/ChatGPT-Image-Oct-7-2025-12_46_33-PM.webp"
+          <motion.img
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            src="https://www.tjztransports.com/wp-content/uploads/2025/10/Cape-Town-City-Cape-Peninsula.webp"
             alt="Plan with a local"
             className="h-[320px] w-full rounded-2xl object-cover md:h-[420px]"
           />
@@ -475,8 +567,15 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Discover What We Provide</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {services.map((service) => (
-              <article key={service.number} className="group relative h-[420px] overflow-hidden rounded-2xl">
+            {services.map((service, index) => (
+              <motion.article
+                key={service.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: index * 0.08 }}
+                className="group relative h-[420px] overflow-hidden rounded-2xl"
+              >
                 <img src={service.image} alt={service.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/45 p-6" />
                 <div className="absolute inset-x-0 bottom-0 p-6">
@@ -484,7 +583,7 @@ export default function HomePage() {
                   <h3 className="mb-2 text-2xl font-bold">{service.title}</h3>
                   <p className="text-sm text-white/95">{service.description}</p>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -499,13 +598,20 @@ export default function HomePage() {
             <p className="mt-1 text-sm">Based on 3 reviews • powered by Google</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            {testimonials.map((testimonial) => (
-              <article key={testimonial.name} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            {testimonials.map((testimonial, index) => (
+              <motion.article
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+              >
                 <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-[#3166DB]">{testimonial.name}</p>
                 <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">{testimonial.time}</p>
                 <p className="mb-3 text-sm leading-6 text-gray-700">&quot;{testimonial.text}&quot;</p>
                 <p className="text-sm text-[#F4B400]">{testimonial.rating}</p>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -517,11 +623,18 @@ export default function HomePage() {
             We’re here to take you to the places you&apos;ll love
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {experienceStats.map((item) => (
-              <article key={item.label} className="rounded-2xl border border-gray-200 bg-white p-6 text-center">
+            {experienceStats.map((item, index) => (
+              <motion.article
+                key={item.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.45, delay: index * 0.08 }}
+                className="rounded-2xl border border-gray-200 bg-white p-6 text-center"
+              >
                 <p className="text-sm font-medium text-gray-600">{item.label}</p>
                 <p className="mt-2 text-3xl font-extrabold text-[#3166DB]">{item.value}</p>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -532,8 +645,12 @@ export default function HomePage() {
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Follow our journey on gallery</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {galleryImages.map((image, index) => (
-              <img
+              <motion.img
                 key={image}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.45, delay: index * 0.05 }}
                 src={image}
                 alt={`Gallery ${index + 1}`}
                 className="h-56 w-full rounded-xl object-cover"
@@ -588,29 +705,129 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="bg-[#111827] px-4 py-12 text-gray-300">
-        <div className="mx-auto max-w-7xl text-center">
-          <button
-            onClick={() => setIsBookingOpen(true)}
-            className="mb-5 rounded-full bg-[#3166DB] px-8 py-3 font-semibold text-white transition hover:bg-[#234fb0]"
+      <footer className="bg-[#111827] text-gray-300">
+        <div className="border-y border-white/10 px-4 py-7">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.45 }}
+            className="text-center text-sm font-semibold uppercase tracking-[0.22em] text-[#F7DC58]"
           >
-            Get Order
-          </button>
-          <div className="mb-4 flex items-center justify-center gap-4">
-            {footerSocialLinks.map((item) => (
+            Get Up to 20% Off Your First Order
+          </motion.p>
+        </div>
+
+        <div className="px-4 py-12">
+          <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2 lg:grid-cols-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45 }}
+            >
+              <h3 className="mb-4 text-lg font-semibold text-white">Contact</h3>
+              <p className="text-sm text-gray-300">7 Enchor Road, Diep River, South Africa | Cape Town.</p>
+              <p className="mt-3 text-sm text-gray-300">Tel : +(27) 73 799 7744 bookings@tjztransports.com</p>
+              <p className="mt-3 text-sm text-gray-300">Monday - Friday : 08:00 - 22:00</p>
+              <p className="text-sm text-gray-300">Saturday - Sunday : 07:00 - 21:00</p>
               <a
-                key={item.label}
-                href={item.href}
+                href="https://api.whatsapp.com/send/?phone=27611700945&text&type=phone_number&app_absent=0"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={item.label}
-                className="rounded-full border border-gray-600 p-2 text-gray-200 transition hover:border-white hover:text-white"
+                className="mt-5 inline-flex rounded-full border border-[#25d366] bg-[#25d366] px-5 py-2 text-sm font-semibold text-white transition hover:opacity-90"
               >
-                <item.icon className="h-4 w-4" />
+                WhatsApp
               </a>
-            ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.08 }}
+            >
+              <h3 className="mb-4 text-lg font-semibold text-white">Menu</h3>
+              <ul className="space-y-2 text-sm">
+                {footerMenuLinks.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-300 transition hover:text-white">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.16 }}
+            >
+              <h3 className="mb-4 text-lg font-semibold text-white">Destination</h3>
+              <ul className="space-y-2 text-sm">
+                {footerDestinationLinks.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-300 transition hover:text-white">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex items-center gap-3">
+                {footerSocialLinks.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    className="rounded-full border border-gray-600 p-2 text-gray-200 transition hover:scale-105 hover:border-white hover:text-white"
+                  >
+                    <item.icon className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.24 }}
+            >
+              <h3 className="mb-4 text-lg font-semibold text-white">Support</h3>
+              <ul className="space-y-2 text-sm">
+                {footerSupportLinks.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-300 transition hover:text-white">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
-          <p className="text-sm">&copy; 2025 Tjztransports Travel &amp; Tours . All Rights Reserved</p>
+        </div>
+
+        <div className="border-t border-white/10 px-4 py-6">
+          <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-sm md:flex-row md:justify-between">
+            <p>© 2025 Tjztransports Travel &amp; Tours . All Rights Reserved</p>
+            <p>
+              Developed by{' '}
+              <a href="https://nextrixtech.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:underline">
+                NEXTRiX Technologies
+              </a>
+            </p>
+            <a href="#" className="opacity-90 transition hover:opacity-100">
+              <img
+                src="https://tjztransports.com/wp-content/uploads/2025/05/bank.png"
+                alt="Payment partners"
+                className="h-5 w-auto"
+              />
+            </a>
+          </div>
         </div>
       </footer>
 
