@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Facebook, Twitter, Youtube } from 'lucide-react';
 import BookingForm from './components/BookingForm';
 
@@ -14,11 +13,26 @@ const heroSlides = [
 ];
 
 const whyChooseUs = [
-  '24/7 Customer Support',
-  'Millions of reviews',
-  'Plan your way',
-  'Best Price Guarantee',
-  'Unforgettable Experiences',
+  {
+    title: '24/7 Customer Support',
+    description: "We're here for you anytime, day or night — ready to help whenever you need us.",
+  },
+  {
+    title: 'Millions of reviews',
+    description: 'Trusted by travelers worldwide—with millions of real reviews to guide your journey.',
+  },
+  {
+    title: 'Plan your way',
+    description: 'Enjoy flexible travel options tailored to you. Adventure, relaxation, or discovery—you choose, we deliver.',
+  },
+  {
+    title: 'Best Price Guarantee',
+    description: 'Book with confidence knowing you’re getting the best deal.',
+  },
+  {
+    title: 'Unforgettable Experiences',
+    description: 'Handpicked tours and activities designed to make every moment count.',
+  },
 ];
 
 const featuredTours = [
@@ -26,50 +40,66 @@ const featuredTours = [
     title: '10 Days Luxury Honeymoon Safari Tour Across South Africa',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/private-granite-suites_lr-rctg2n4hj6o62yz1lcvfhvy5vcwtzjbvrjzb1yk1ls.jpg',
+    duration: '10 hours',
+    price: 'From USD $6650.00',
   },
   {
     title: '5 Days Garden Route, Mosselbay, Knysna, Plettenberg Bay, Oudtshoorn, Route 6',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/Mossel-Bay-Point-rctfhjmw51shi1m8s8kvj7lpw0w983krj4uzadu59c.jpg',
+    duration: '5 hours',
+    price: 'From USD $2450.00',
   },
   {
     title: 'VIP Day Experience in Cape Town : Hidden Gems & Diamond Shops',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/beautiful-view-of-table-mountain-and-camps-bay-beach-in-cape-town-south-africa-rctez32zx6irhqfjkrbn2datwlvr23ajbrmozr7hgg.jpeg',
+    duration: '10 hours',
+    price: 'From USD $450.00',
   },
   {
     title: 'Full-Day Private Cape Town Helicopter and Winelands Stellenbosch Tour',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/Hopper-helicopter-tour-cape-town-1-rcte2bfjo3nwr411x3eun4zce1e3py7ehkwbphskdc.jpg',
+    duration: '8 hours',
+    price: 'From USD $425.00',
   },
   {
     title: 'Full-Day Private Tour: Cape of Good Hope and Penguin Boulders Beach',
     image:
       'https://www.tjztransports.com/wp-content/uploads/2025/10/Cape-Town-City-Cape-Peninsula.webp',
+    duration: '8 hours',
+    price: 'From USD $166.00',
   },
   {
     title: 'Full-Day Cape Town Private Transfers and Chauffeur Services',
     image:
       'https://www.tjztransports.com/wp-content/uploads/2025/10/ChatGPT-Image-Oct-7-2025-01_03_28-PM.webp',
+    duration: '10 hours',
+    price: 'From USD $165.00',
   },
   {
     title: 'Full-Day Private: The Best of Cape Town in One Day Tour',
     image:
       'https://www.tjztransports.com/wp-content/uploads/2025/10/ChatGPT-Image-Oct-7-2025-12_57_54-PM.webp',
+    duration: '10 hours',
+    price: 'From USD $156.00',
   },
   {
     title: 'Full-Day Private Tour: Robben Island, City Tour, and Township Tour of Langa',
     image:
       'https://www.tjztransports.com/wp-content/uploads/2025/10/Tourists-on-a-guided-township-tour-in-Langa-Cape-Town-South-Africa.webp',
+    duration: '4 hours',
+    price: 'From USD $140.00',
   },
 ];
 
 const destinationHighlights = [
-  { name: 'City Tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/Cape-Town-City-Cape-Peninsula.webp' },
-  { name: 'Cape Town', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/cape-town-south-africa.jpg' },
-  { name: 'Safari', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/GettyImages-104329693-5a27e55e980207003656238e.jpg' },
-  { name: 'Nature', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/hermanus.jpg' },
-  { name: 'Location', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/146-1.jpg' },
+  { name: 'City Tours', tours: '39 tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/Cape-Town-City-Cape-Peninsula.webp' },
+  { name: 'Cape Town', tours: '60 tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/cape-town-south-africa.jpg' },
+  { name: 'Safari', tours: '65 tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/GettyImages-104329693-5a27e55e980207003656238e.jpg' },
+  { name: 'Nature', tours: '30 tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/hermanus.jpg' },
+  { name: 'Location', tours: '79 tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/146-1.jpg' },
   { name: 'Beaches Tours', image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/aerial-view-of-cape-town-south-africa-2023-11-27-05-00-33-utc-1.jpg' },
 ];
 
@@ -78,16 +108,22 @@ const interestTours = [
     title: 'Full-Day Small Group Shared Tour: Table Mountain, Cape of Good Hope, Cape Point & Penguins Boulders Beach',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/free-walking-tours-cape-town-480x320-1-rcq1jvgnggntvxuzds165xgna910amvvca0u4mg3ds.jpg',
+    duration: '9 hours',
+    price: 'From USD $65.00',
   },
   {
     title: 'Full-Day Private Tour: Cape Winelands to Stellenbosch and Franschhoek',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/delaire-graff-estate-dylan-lewis-cheetah-sculpture-rctctighwebvc93zjq71sg0d0u88tcc0btf46o84yo.jpg',
+    duration: '9 hours',
+    price: 'From USD $105.00',
   },
   {
     title: 'Cape Town Township Half-Day Tour and District Six Museum',
     image:
       'https://www.tjztransports.com/wp-content/uploads/elementor/thumbs/District-Six-Museum_GettyImages-523958281-rctgng9uu55p46qv2up374wjbgcdeaxyajxajhp9uo.webp',
+    duration: '4 hours',
+    price: 'From USD $45.00',
   },
 ];
 
@@ -117,13 +153,45 @@ const testimonials = [
     name: 'tresor milambo',
     time: '12:09 17 Oct 25',
     text: 'We visit so differences place the was good....',
+    rating: '★★★★★',
   },
   {
     name: 'YANNICK WANDJA',
     time: '13:38 16 Oct 25',
     text:
       'That was the experience for year 2025. Robben Island and City tour. Visiting the former Nelson Mandela prison, also how South African rural area called: location looks like. I mean the beaty of african.',
+    rating: '★★★★★',
   },
+];
+
+const journeyHighlights = [
+  {
+    kicker: 'Unforgettable Journeys',
+    title: 'Explore Cape Town',
+    image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/cape-town-south-africa.jpg',
+  },
+  {
+    kicker: 'City Tours',
+    title: 'Popular Destinations',
+    image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/Cape-Town-City-Cape-Peninsula.webp',
+  },
+  {
+    kicker: 'Unforgettable Journeys',
+    title: 'Explore Beaches Tours',
+    image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/aerial-view-of-cape-town-south-africa-2023-11-27-05-00-33-utc-1.jpg',
+  },
+  {
+    kicker: 'Explore Nature',
+    title: 'Cape Town Destinations',
+    image: 'https://www.tjztransports.com/wp-content/uploads/2025/10/hermanus.jpg',
+  },
+];
+
+const experienceStats = [
+  { label: 'Happy Travelers', value: '0 +' },
+  { label: 'Dream Destinations', value: '0 +' },
+  { label: 'Years of Experience', value: '0 +' },
+  { label: 'Support & Guidance', value: '0 /5' },
 ];
 
 const galleryImages = [
@@ -195,15 +263,12 @@ export default function HomePage() {
             <a href="#contact" className="text-sm font-medium hover:text-[#3166DB]">
               Contact
             </a>
-            <Link href="/crm" className="text-sm font-medium hover:text-[#3166DB]">
-              CRM
-            </Link>
           </div>
           <button
             onClick={() => setIsBookingOpen(true)}
             className="rounded-full bg-[#3166DB] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#234fb0]"
           >
-            Book Now
+            Get Order
           </button>
         </div>
       </nav>
@@ -273,8 +338,9 @@ export default function HomePage() {
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Why Choose Us</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {whyChooseUs.map((item) => (
-              <div key={item} className="rounded-xl border border-white/25 bg-white/10 p-5 text-center">
-                <p className="font-semibold">{item}</p>
+              <div key={item.title} className="rounded-xl border border-white/25 bg-white/10 p-5 text-center">
+                <p className="mb-2 font-semibold">{item.title}</p>
+                <p className="text-sm text-white/90">{item.description}</p>
               </div>
             ))}
           </div>
@@ -291,9 +357,31 @@ export default function HomePage() {
                 <div className="relative h-56">
                   <img src={tour.image} alt={tour.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20" />
+                  <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-[#1A1E39]">
+                    {tour.duration}
+                  </span>
                 </div>
                 <div className="p-4">
                   <h3 className="line-clamp-3 text-sm font-semibold leading-6">{tour.title}</h3>
+                  <p className="mt-3 text-sm font-bold text-[#3166DB]">{tour.price}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#1A1E39] px-4 py-16 text-white">
+        <div className="mx-auto max-w-7xl">
+          <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Unforgettable Journeys</h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {journeyHighlights.map((item) => (
+              <article key={item.title} className="group relative h-64 overflow-hidden rounded-2xl">
+                <img src={item.image} alt={item.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/45 p-5" />
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#F7DC58]">{item.kicker}</p>
+                  <h3 className="text-lg font-bold">{item.title}</h3>
                 </div>
               </article>
             ))}
@@ -334,9 +422,15 @@ export default function HomePage() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {interestTours.map((tour) => (
               <article key={tour.title} className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-                <img src={tour.image} alt={tour.title} className="h-56 w-full object-cover" />
+                <div className="relative">
+                  <img src={tour.image} alt={tour.title} className="h-56 w-full object-cover" />
+                  <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-[#1A1E39]">
+                    {tour.duration}
+                  </span>
+                </div>
                 <div className="p-4">
                   <h3 className="line-clamp-3 text-sm font-semibold leading-6">{tour.title}</h3>
+                  <p className="mt-3 text-sm font-bold text-[#3166DB]">{tour.price}</p>
                 </div>
               </article>
             ))}
@@ -346,7 +440,10 @@ export default function HomePage() {
               <article key={item.name} className="group relative h-44 overflow-hidden rounded-xl">
                 <img src={item.image} alt={item.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/35" />
-                <h3 className="absolute bottom-3 left-3 text-sm font-semibold text-white">{item.name}</h3>
+                <div className="absolute bottom-3 left-3">
+                  <h3 className="text-sm font-semibold text-white">{item.name}</h3>
+                  {item.tours && <p className="mt-1 text-xs text-white/90">{item.tours}</p>}
+                </div>
               </article>
             ))}
           </div>
@@ -403,10 +500,27 @@ export default function HomePage() {
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             {testimonials.map((testimonial) => (
-              <article key={testimonial.name} className="rounded-2xl border border-gray-200 bg-[#f7f9fc] p-6">
+              <article key={testimonial.name} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-[#3166DB]">{testimonial.name}</p>
                 <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">{testimonial.time}</p>
-                <p className="mb-4 text-sm leading-6 text-gray-700">&quot;{testimonial.text}&quot;</p>
-                <p className="font-semibold text-[#3166DB]">{testimonial.name}</p>
+                <p className="mb-3 text-sm leading-6 text-gray-700">&quot;{testimonial.text}&quot;</p>
+                <p className="text-sm text-[#F4B400]">{testimonial.rating}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f9fc] px-4 py-16">
+        <div className="mx-auto max-w-7xl">
+          <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">
+            We’re here to take you to the places you&apos;ll love
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {experienceStats.map((item) => (
+              <article key={item.label} className="rounded-2xl border border-gray-200 bg-white p-6 text-center">
+                <p className="text-sm font-medium text-gray-600">{item.label}</p>
+                <p className="mt-2 text-3xl font-extrabold text-[#3166DB]">{item.value}</p>
               </article>
             ))}
           </div>
@@ -497,17 +611,6 @@ export default function HomePage() {
             ))}
           </div>
           <p className="text-sm">&copy; 2025 Tjztransports Travel &amp; Tours . All Rights Reserved</p>
-          <p className="mt-2 text-sm">
-            Developed by{' '}
-            <a href="https://nextrixtech.com" target="_blank" rel="noopener noreferrer" className="text-white hover:underline">
-              NEXTRiX Technologies
-            </a>
-          </p>
-          <p className="mt-3 text-xs">
-            <Link href="/crm" className="hover:text-white">
-              CRM Dashboard
-            </Link>
-          </p>
         </div>
       </footer>
 
