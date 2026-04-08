@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Facebook, Twitter, Youtube } from 'lucide-react';
 import BookingForm from './components/BookingForm';
 
 const heroSlides = [
@@ -132,6 +132,24 @@ const galleryImages = [
   'https://www.tjztransports.com/wp-content/uploads/2025/06/g4.jpg',
   'https://www.tjztransports.com/wp-content/uploads/2025/06/g5.jpg',
   'https://www.tjztransports.com/wp-content/uploads/2025/06/g6.jpg',
+];
+
+const footerSocialLinks = [
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/tjztransports',
+    icon: Facebook,
+  },
+  {
+    label: 'X (Twitter)',
+    href: 'https://x.com/tjztransports',
+    icon: Twitter,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@tjztransports',
+    icon: Youtube,
+  },
 ];
 
 export default function HomePage() {
@@ -463,7 +481,20 @@ export default function HomePage() {
           >
             Get Order
           </button>
-          <p className="mb-3 text-sm">Facebook X-twitter Youtube</p>
+          <div className="mb-4 flex items-center justify-center gap-4">
+            {footerSocialLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.label}
+                className="rounded-full border border-gray-600 p-2 text-gray-200 transition hover:border-white hover:text-white"
+              >
+                <item.icon className="h-4 w-4" />
+              </a>
+            ))}
+          </div>
           <p className="text-sm">&copy; 2025 Tjztransports Travel &amp; Tours . All Rights Reserved</p>
           <p className="mt-2 text-sm">
             Developed by{' '}
