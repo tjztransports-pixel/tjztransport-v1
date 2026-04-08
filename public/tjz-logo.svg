@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="200" height="50">
+  <!-- Background -->
+  <rect width="200" height="50" fill="none"/>
+  
+  <!-- TJZ Text -->
+  <text x="10" y="35" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#6EC1E4">
+    TJZ
+  </text>
+  
+  <!-- Underline accent -->
+  <rect x="10" y="38" width="50" height="3" fill="#61CE70"/>
+</svg>
