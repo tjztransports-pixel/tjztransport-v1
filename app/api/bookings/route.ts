@@ -22,15 +22,63 @@ const parseGuests = (value: unknown): number => {
   return Math.floor(parsed);
 };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[0-9+\-\s()]{7,20}$/;
+const MAX_BODY_BYTES = 20_000;
+
+const isSameOriginRequest = (request: NextRequest): boolean => {
+  const origin = request.headers.get('origin');
+  if (!origin) {
+    return true;
+  }
+
+  const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host');
+  if (!host) {
+    return false;
+  }
+
+  try {
+    const originUrl = new URL(origin);
+    return originUrl.host === host;
+  } catch {
+    return false;
+  }
+};
+
 export async function POST(request: NextRequest) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json(
+      { error: 'Invalid request origin' },
+      { status: 403 }
+    );
+  }
+
+  const contentType = request.headers.get('content-type') ?? '';
+  if (!contentType.toLowerCase().includes('application/json')) {
+    return NextResponse.json(
+      { error: 'Content-Type must be application/json' },
+      { status: 415 }
+    );
+  }
+
+  const contentLengthHeader = request.headers.get('content-length');
+  const contentLength = contentLengthHeader ? Number(contentLengthHeader) : 0;
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return NextResponse.json(
+      { error: 'Request payload too large' },
+      { status: 413 }
+    );
+  }
+
+  let supabase: ReturnType<typeof createAdminClient>;
+  try {
+    supabase = createAdminClient();
+  } catch {
     return NextResponse.json(
       { error: 'Supabase configuration missing' },
       { status: 500 }
     );
   }
-
-  const supabase = createAdminClient();
 
   try {
     const body = (await request.json()) as BookingPayload;
@@ -46,10 +94,9 @@ export async function POST(request: NextRequest) {
     const guests = parseGuests(body.guests ?? body.numTravelers ?? body.num_travelers);
     const country = body.country?.trim() || '';
     const assignedUserId: string | null = null;
-
-    if (!name || !email || !phone) {
+    if (!name || !email || !phone || !EMAIL_REGEX.test(email) || !PHONE_REGEX.test(phone)) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Invalid booking details' },
         { status: 400 }
       );
     }

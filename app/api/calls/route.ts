@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { requireApiUser } from '@/lib/api/auth';
 
 export async function GET(request: Request) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const auth = await requireApiUser();
+    if ('response' in auth) {
+      return auth.response;
     }
+
+    const user = auth.user;
+    const supabase = await createClient();
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '50');
@@ -42,14 +42,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const auth = await requireApiUser();
+    if ('response' in auth) {
+      return auth.response;
     }
+
+    const user = auth.user;
+    const supabase = await createClient();
 
     const body = await request.json();
     const {

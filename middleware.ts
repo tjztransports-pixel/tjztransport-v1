@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { getSupabasePublicEnv } from '@/lib/env/client';
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -30,18 +31,15 @@ export async function middleware(request: NextRequest) {
       headers: request.headers,
     },
   });
+  let supabaseUrl: string;
+  let supabaseAnonKey: string;
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (
-    !supabaseUrl ||
-    supabaseUrl === 'YOUR_SUPABASE_URL' ||
-    !supabaseAnonKey ||
-    supabaseAnonKey === 'YOUR_SUPABASE_ANON_KEY'
-  ) {
-    // If Supabase credentials are not set or are still placeholders, bypass the middleware
-    return response;
+  try {
+    const env = getSupabasePublicEnv();
+    supabaseUrl = env.url;
+    supabaseAnonKey = env.anonKey;
+  } catch {
+    return NextResponse.redirect(new URL('/auth', request.url));
   }
 
   const supabase = await createServerClient(

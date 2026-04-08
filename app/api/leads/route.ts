@@ -1,7 +1,16 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
+import { requireApiAdmin } from '@/lib/api/auth';
+
+const MAX_CSV_BYTES = 2 * 1024 * 1024;
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function POST(request: Request) {
+  const auth = await requireApiAdmin();
+  if ('response' in auth) {
+    return auth.response;
+  }
   const supabase = await createClient();
   
   try {
@@ -10,6 +19,10 @@ export async function POST(request: Request) {
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    }
+
+    if (file.size > MAX_CSV_BYTES) {
+      return NextResponse.json({ error: 'CSV file is too large' }, { status: 413 });
     }
 
     const text = await file.text();
@@ -22,6 +35,13 @@ export async function POST(request: Request) {
     const sourceIndex = headers.findIndex(h => h.toLowerCase().includes('source'));
     const phoneIndex = headers.findIndex(h => h.toLowerCase().includes('phone') && !h.toLowerCase().includes('secondary') && !h.toLowerCase().includes('whatsapp'));
     const secondaryPhoneIndex = headers.findIndex(h => h.toLowerCase().includes('secondary phone'));
+
+    if (nameIndex === -1 || emailIndex === -1) {
+      return NextResponse.json(
+        { error: 'CSV must include name and email columns' },
+        { status: 400 }
+      );
+    }
     
     const leads = [];
     
@@ -105,6 +125,10 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const auth = await requireApiAdmin();
+  if ('response' in auth) {
+    return auth.response;
+  }
   const supabase = await createClient();
   const { searchParams } = new URL(request.url);
   const leadId = searchParams.get('id');
@@ -112,6 +136,13 @@ export async function DELETE(request: Request) {
   if (!leadId) {
     return NextResponse.json(
       { error: 'Lead ID is required' },
+      { status: 400 }
+    );
+  }
+
+  if (!UUID_REGEX.test(leadId)) {
+    return NextResponse.json(
+      { error: 'Invalid lead ID' },
       { status: 400 }
     );
   }
