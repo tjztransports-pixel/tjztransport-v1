@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Facebook, Twitter, Youtube } from 'lucide-react';
 import BookingForm from './components/BookingForm';
 
@@ -246,6 +246,7 @@ const footerSocialLinks = [
 export default function HomePage() {
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [currentWhyChooseSlide, setCurrentWhyChooseSlide] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -255,12 +256,48 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+
+    const syncAutoSlide = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+
+      if (mediaQuery.matches) {
+        interval = setInterval(() => {
+          setCurrentWhyChooseSlide((prev) => (prev + 1) % whyChooseUs.length);
+        }, 4500);
+      }
+    };
+
+    syncAutoSlide();
+    mediaQuery.addEventListener('change', syncAutoSlide);
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      mediaQuery.removeEventListener('change', syncAutoSlide);
+    };
+  }, []);
+
   const nextSlide = () => {
     setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
   const prevSlide = () => {
     setCurrentHeroSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const nextWhyChooseSlide = () => {
+    setCurrentWhyChooseSlide((prev) => (prev + 1) % whyChooseUs.length);
+  };
+
+  const prevWhyChooseSlide = () => {
+    setCurrentWhyChooseSlide((prev) => (prev - 1 + whyChooseUs.length) % whyChooseUs.length);
   };
 
   return (
@@ -358,7 +395,60 @@ export default function HomePage() {
       <section className="bg-[#3166DB] px-4 py-14 text-white">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Why Choose Us</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="md:hidden">
+            <div className="relative overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.article
+                  key={whyChooseUs[currentWhyChooseSlide].title}
+                  initial={{ opacity: 0, x: 36 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -36 }}
+                  transition={{ duration: 0.35 }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.2}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x < -60) {
+                      nextWhyChooseSlide();
+                    } else if (info.offset.x > 60) {
+                      prevWhyChooseSlide();
+                    }
+                  }}
+                  className="rounded-xl border border-white/25 bg-white/10 px-12 py-6 text-center"
+                >
+                  <p className="mb-2 font-semibold">{whyChooseUs[currentWhyChooseSlide].title}</p>
+                  <p className="text-sm text-white/90">{whyChooseUs[currentWhyChooseSlide].description}</p>
+                </motion.article>
+              </AnimatePresence>
+              <button
+                onClick={prevWhyChooseSlide}
+                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/15 p-2 text-white transition hover:bg-white/25"
+                aria-label="Previous Why Choose Us item"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                onClick={nextWhyChooseSlide}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/15 p-2 text-white transition hover:bg-white/25"
+                aria-label="Next Why Choose Us item"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="mt-4 flex justify-center gap-2">
+              {whyChooseUs.map((item, index) => (
+                <button
+                  key={item.title}
+                  onClick={() => setCurrentWhyChooseSlide(index)}
+                  aria-label={`Show ${item.title}`}
+                  className={`h-2 w-2 rounded-full transition ${
+                    index === currentWhyChooseSlide ? 'bg-white' : 'bg-white/40'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-5">
             {whyChooseUs.map((item, index) => (
               <motion.div
                 key={item.title}
