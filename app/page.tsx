@@ -674,7 +674,7 @@ export default function HomePage() {
       </section>
 
       <section className="px-4 py-14">
-        <div className="mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 text-center">
           <h2 className="mb-3 text-2xl font-bold">Our Amazing Partner in Tech!</h2>
           <p className="text-gray-700">
             NEXTRiX Technologies delivers innovative IT solutions, specializing in web design, WordPress development, eCommerce, SEO, and digital marketing. They help businesses grow online with reliable, tailored services designed to meet modern digital needs.
@@ -688,7 +688,7 @@ export default function HomePage() {
             <img
               src="https://nextrixtech.com/wp-content/uploads/2025/07/nextrixtech-logo.png"
               alt="NEXTRiX Technologies logo"
-              className="h-16 w-auto rounded-lg border border-gray-200 bg-white p-2 shadow-sm"
+              className="h-16 w-16 rounded-full object-cover"
             />
           </a>
         </div>
