@@ -843,6 +843,10 @@ export default function HomePage() {
               Developed by{' '}
               <a href="https://nextrixtech.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:underline">
                 NEXTRiX Technologies
+              </a>{' '}
+              and Backend by{' '}
+              <a href="https://www.instagram.com/orannieofficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:underline">
+                Orannie
               </a>
             </p>
             <a href="#" className="opacity-90 transition hover:opacity-100">
