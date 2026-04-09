@@ -596,6 +596,19 @@ export default function HomePage() {
             <p className="font-semibold text-[#1A1E39]">Tjztransports Travel &amp; Tours</p>
             <p className="mt-1 text-xl font-bold text-[#3166DB]">5.0</p>
             <p className="mt-1 text-sm">Based on 3 reviews • powered by Google</p>
+            <a
+              href="https://search.google.com/local/writereview?placeid=ChIJWVpE9z9DzB0RaPOyjmGA7ok"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#3166DB] bg-white px-5 py-2 text-sm font-semibold text-[#3166DB] transition hover:bg-[#3166DB] hover:text-white"
+            >
+              <img
+                src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
+                alt="Google logo"
+                className="h-5 w-5"
+              />
+              Review us on Google
+            </a>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             {testimonials.map((testimonial, index) => (
@@ -666,6 +679,18 @@ export default function HomePage() {
           <p className="text-gray-700">
             NEXTRiX Technologies delivers innovative IT solutions, specializing in web design, WordPress development, eCommerce, SEO, and digital marketing. They help businesses grow online with reliable, tailored services designed to meet modern digital needs.
           </p>
+          <a
+            href="https://nextrixtech.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex items-center justify-center"
+          >
+            <img
+              src="https://nextrixtech.com/wp-content/uploads/2025/07/nextrixtech-logo.png"
+              alt="NEXTRiX Technologies logo"
+              className="h-16 w-auto rounded-lg border border-gray-200 bg-white p-2 shadow-sm"
+            />
+          </a>
         </div>
       </section>
 
