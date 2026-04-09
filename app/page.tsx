@@ -228,17 +228,17 @@ const galleryImages = [
 const footerSocialLinks = [
   {
     label: 'Facebook',
-    href: 'https://www.facebook.com/tjztransports',
+    href: null,
     icon: Facebook,
   },
   {
     label: 'X (Twitter)',
-    href: 'https://x.com/tjztransports',
+    href: null,
     icon: Twitter,
   },
   {
     label: 'YouTube',
-    href: 'https://www.youtube.com/@tjztransports',
+    href: null,
     icon: Youtube,
   },
 ];
@@ -802,16 +802,26 @@ export default function HomePage() {
               </ul>
               <div className="mt-6 flex items-center gap-3">
                 {footerSocialLinks.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={item.label}
-                    className="rounded-full border border-gray-600 p-2 text-gray-200 transition hover:scale-105 hover:border-white hover:text-white"
-                  >
-                    <item.icon className="h-4 w-4" />
-                  </a>
+                  item.href ? (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.label}
+                      className="rounded-full border border-gray-600 p-2 text-gray-200 transition hover:scale-105 hover:border-white hover:text-white"
+                    >
+                      <item.icon className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <span
+                      key={item.label}
+                      aria-label={item.label}
+                      className="rounded-full border border-gray-600 p-2 text-gray-200"
+                    >
+                      <item.icon className="h-4 w-4" />
+                    </span>
+                  )
                 ))}
               </div>
             </motion.div>
