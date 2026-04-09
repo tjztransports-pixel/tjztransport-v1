@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, ChevronLeft, ChevronRight, Facebook, Twitter, Youtube } from 'lucide-react';
+import { ArrowUpRight, Facebook, Twitter, Youtube } from 'lucide-react';
 import BookingForm from './components/BookingForm';
 
 const heroSlides = [
@@ -257,31 +257,11 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | null = null;
-    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const interval = setInterval(() => {
+      setCurrentWhyChooseSlide((prev) => (prev + 1) % whyChooseUs.length);
+    }, 4500);
 
-    const syncAutoSlide = () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-
-      if (mediaQuery.matches) {
-        interval = setInterval(() => {
-          setCurrentWhyChooseSlide((prev) => (prev + 1) % whyChooseUs.length);
-        }, 4500);
-      }
-    };
-
-    syncAutoSlide();
-    mediaQuery.addEventListener('change', syncAutoSlide);
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-      mediaQuery.removeEventListener('change', syncAutoSlide);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   const nextSlide = () => {
@@ -332,7 +312,19 @@ export default function HomePage() {
         </div>
       </nav>
 
-      <section className="relative h-[70vh] min-h-[520px] overflow-hidden">
+      <motion.section
+        className="relative h-[70vh] min-h-[520px] overflow-hidden"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.14}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -70) {
+            nextSlide();
+          } else if (info.offset.x > 70) {
+            prevSlide();
+          }
+        }}
+      >
         <img
           src={heroSlides[currentHeroSlide]}
           alt="TJZ Transports hero"
@@ -355,31 +347,7 @@ export default function HomePage() {
             Explore Now
           </button>
         </div>
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/25 p-2 text-white hover:bg-white/40"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/25 p-2 text-white hover:bg-white/40"
-          aria-label="Next slide"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
-        <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
-          {heroSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentHeroSlide(i)}
-              className={`h-2 w-2 rounded-full ${i === currentHeroSlide ? 'bg-white' : 'bg-white/50'}`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
-      </section>
+      </motion.section>
 
       <section className="bg-[#f5f7fb] px-4 py-16">
         <div className="mx-auto max-w-6xl text-center">
@@ -395,73 +363,30 @@ export default function HomePage() {
       <section className="bg-[#3166DB] px-4 py-14 text-white">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-10 text-center text-3xl font-bold md:text-4xl">Why Choose Us</h2>
-          <div className="md:hidden">
-            <div className="relative overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.article
-                  key={whyChooseUs[currentWhyChooseSlide].title}
-                  initial={{ opacity: 0, x: 36 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -36 }}
-                  transition={{ duration: 0.35 }}
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={(_, info) => {
-                    if (info.offset.x < -60) {
-                      nextWhyChooseSlide();
-                    } else if (info.offset.x > 60) {
-                      prevWhyChooseSlide();
-                    }
-                  }}
-                  className="rounded-xl border border-white/25 bg-white/10 px-12 py-6 text-center"
-                >
-                  <p className="mb-2 font-semibold">{whyChooseUs[currentWhyChooseSlide].title}</p>
-                  <p className="text-sm text-white/90">{whyChooseUs[currentWhyChooseSlide].description}</p>
-                </motion.article>
-              </AnimatePresence>
-              <button
-                onClick={prevWhyChooseSlide}
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/15 p-2 text-white transition hover:bg-white/25"
-                aria-label="Previous Why Choose Us item"
+          <div className="mx-auto max-w-3xl overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.article
+                key={whyChooseUs[currentWhyChooseSlide].title}
+                initial={{ opacity: 0, x: 36 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -36 }}
+                transition={{ duration: 0.35 }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -60) {
+                    nextWhyChooseSlide();
+                  } else if (info.offset.x > 60) {
+                    prevWhyChooseSlide();
+                  }
+                }}
+                className="rounded-xl border border-white/25 bg-white/10 px-8 py-6 text-center md:px-12 md:py-8"
               >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                onClick={nextWhyChooseSlide}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/15 p-2 text-white transition hover:bg-white/25"
-                aria-label="Next Why Choose Us item"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-            <div className="mt-4 flex justify-center gap-2">
-              {whyChooseUs.map((item, index) => (
-                <button
-                  key={item.title}
-                  onClick={() => setCurrentWhyChooseSlide(index)}
-                  aria-label={`Show ${item.title}`}
-                  className={`h-2 w-2 rounded-full transition ${
-                    index === currentWhyChooseSlide ? 'bg-white' : 'bg-white/40'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-5">
-            {whyChooseUs.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className="rounded-xl border border-white/25 bg-white/10 p-5 text-center"
-              >
-                <p className="mb-2 font-semibold">{item.title}</p>
-                <p className="text-sm text-white/90">{item.description}</p>
-              </motion.div>
-            ))}
+                <p className="mb-2 font-semibold">{whyChooseUs[currentWhyChooseSlide].title}</p>
+                <p className="text-sm text-white/90">{whyChooseUs[currentWhyChooseSlide].description}</p>
+              </motion.article>
+            </AnimatePresence>
           </div>
         </div>
       </section>
